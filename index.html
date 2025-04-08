@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legosphere - Navigation</title>
+    <title>Legosphere - AI-Driven Legal Document Conversion</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,32 +15,865 @@
         .gradient-bg {
             background: linear-gradient(120deg, #1a202c 0%, #2d3748 100%);
         }
+        .section {
+            margin-bottom: 3rem;
+        }
+        .code-block {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 1em;
+            overflow-x: auto;
+        }
+        .schema-box {
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1em;
+            border-radius: 5px;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .mockup-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background-color: #f8fafc;
+            margin: 1rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre;
+        }
+        .feature-card {
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .phase-card {
+            border-left: 4px solid #4a5568;
+            background-color: #f8fafc;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .ai-model-card {
+            border-radius: 8px;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        .ai-model-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        /* Custom animation for the hero section */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="gradient-bg text-white py-4 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="text-2xl font-bold">Legosphere</div>
-            <div class="space-x-4">
-                <a href="index.html" class="hover:text-gray-300">Home</a>
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fadeInUp">Legosphere</h1>
+                <p class="text-xl md:text-2xl mb-8 animate-fadeInUp delay-100">AI-Driven Legal Document Conversion for Multinational Corporations</p>
+                <p class="max-w-3xl mx-auto text-gray-300 animate-fadeInUp delay-200">Seamlessly convert legal documents between different national legal frameworks while ensuring compliance and maintaining legal validity.</p>
             </div>
         </div>
-    </nav>
+    </header>
 
     <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">Welcome to Legosphere</h1>
-            <p class="text-gray-600 mb-8">Legal Document Conversion Platform</p>
-        </div>
+        
+        <!-- Overview Section -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div>
+                    <p class="mb-4">Legosphere is a groundbreaking application designed for multinational corporations (MNCs) to effortlessly convert legal documents from one nation's legal framework to another while maintaining compliance and usability.</p>
+                    <p class="mb-4">Whether you're adapting contracts, NDAs, or other legal documents for international operations, Legosphere streamlines the process using advanced AI technology to ensure legal accuracy and reduce the time and cost of manual adaptations.</p>
+                    <div class="mt-6">
+                        <h3 class="text-xl font-semibold mb-3 text-gray-700">Key Benefits</h3>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Reduce time spent on manual document adaptation by up to 70%</li>
+                            <li>Minimize legal risks with AI-powered compliance checking</li>
+                            <li>Ensure consistency across all international legal documents</li>
+                            <li>Maintain document history and traceability for audit purposes</li>
+                            <li>Easily collaborate with legal teams across jurisdictions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Core Capabilities</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-file-upload text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-medium text-gray-900">Document Intake</h4>
+                                <p class="text-gray-600">Upload PDFs or Word documents and select source and target jurisdictions</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-brain text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-medium text-gray-900">AI-Powered Analysis</h4>
+                                <p class="text-gray-600">Advanced NLP models identify and categorize legal clauses</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-sync-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-medium text-gray-900">Legal Framework Conversion</h4>
+                                <p class="text-gray-600">Transforms clauses to comply with target jurisdiction requirements</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-medium text-gray-900">Compliance Verification</h4>
+                                <p class="text-gray-600">Flags potential risks and ensures regulatory adherence</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-file-export text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-medium text-gray-900">Annotated Output</h4>
+                                <p class="text-gray-600">Produces documents with explanatory annotations and change tracking</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Functionality Section -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">App Functionality</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="feature-card bg-white p-6 shadow-md">
+                    <div class="text-blue-600 text-2xl mb-4">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Document Input</h3>
+                    <p class="text-gray-600 mb-4">Upload legal documents in PDF or Word format. Select the source and target jurisdictions from dropdown menus.</p>
+                    <ul class="text-gray-600 list-disc pl-5">
+                        <li>Supports multiple file formats</li>
+                        <li>Initial support for US, UK, EU, India, and China</li>
+                        <li>Document type classification</li>
+                    </ul>
+                </div>
+                <div class="feature-card bg-white p-6 shadow-md">
+                    <div class="text-blue-600 text-2xl mb-4">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Conversion Process</h3>
+                    <p class="text-gray-600 mb-4">Advanced NLP models identify clauses, map them to legal databases, and adapt them for the target jurisdiction.</p>
+                    <ul class="text-gray-600 list-disc pl-5">
+                        <li>Clause identification and categorization</li>
+                        <li>Legal framework mapping</li>
+                        <li>Contextual adaptation</li>
+                    </ul>
+                </div>
+                <div class="feature-card bg-white p-6 shadow-md">
+                    <div class="text-blue-600 text-2xl mb-4">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Document Output</h3>
+                    <p class="text-gray-600 mb-4">Generate a new document with highlighted changes, annotations, and explanations of adaptations made.</p>
+                    <ul class="text-gray-600 list-disc pl-5">
+                        <li>Side-by-side comparison</li>
+                        <li>Annotated changes with legal references</li>
+                        <li>Export as PDF or Word</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-12">
+                <h3 class="text-xl font-semibold mb-4 text-gray-700">Example Conversion</h3>
+                <p class="mb-4">Consider this US NDA clause:</p>
+                <div class="bg-gray-100 p-4 rounded mb-4">
+                    <p class="font-semibold">Original (US):</p>
+                    <p>"The receiving party shall maintain confidentiality for 5 years after disclosure."</p>
+                </div>
+                <p class="mb-4">After processing through Legosphere, the EU-compliant version would be:</p>
+                <div class="bg-gray-100 p-4 rounded mb-4">
+                    <p class="font-semibold">Converted (EU):</p>
+                    <p>"The receiving party shall maintain confidentiality for 5 years after disclosure, in compliance with GDPR Article 5(1)(e) principles of storage limitation."</p>
+                </div>
+                <p class="mb-2">Annotations provided:</p>
+                <ul class="list-disc pl-5 mb-4">
+                    <li>Modified confidentiality period to comply with GDPR storage limitation principles</li>
+                    <li>Added reference to specific GDPR article for legal clarity</li>
+                </ul>
+                <div class="bg-yellow-50 p-4 rounded border-l-4 border-yellow-400">
+                    <p class="font-semibold">DISCLAIMER:</p>
+                    <p>Final review by a qualified legal professional is required before use in actual business contexts.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- UI Mockups Section -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">User Interface Mockups</h2>
+            <p class="mb-6 text-gray-600">Below are mockups of the key screens in the Legosphere application workflow.</p>
+            
+            <h3 class="text-xl font-semibold mb-3 text-gray-700">1. Document Upload Screen</h3>
+            <div class="mockup-container overflow-auto">
+┌──────────────────────────────────────────────────────────┐
+│  LEGOSPHERE                                              │
+│                                                          │
+│  Source Jurisdiction: [United States ▼]                  │
+│  Target Jurisdiction: [European Union ▼]                 │
+│                                                          │
+│  ┌──────────────────────────────────────────────┐       │
+│  │                                              │       │
+│  │     Drag and drop your legal document        │       │
+│  │             or click to browse               │       │
+│  │                                              │       │
+│  └──────────────────────────────────────────────┘       │
+│                                                          │
+│  Document Type: [Non-Disclosure Agreement ▼]             │
+│                                                          │
+│  [   ANALYZE DOCUMENT   ]    [   CANCEL   ]              │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-3 mt-8 text-gray-700">2. Analysis & Processing Screen</h3>
+            <div class="mockup-container overflow-auto">
+┌──────────────────────────────────────────────────────────┐
+│  LEGOSPHERE                                              │
+│                                                          │
+│  Converting: US_NDA_Example.pdf                          │
+│                                                          │
+│  ┌──────────────────────────────────────────────┐       │
+│  │ ████████████████████░░░░░░░░  65% Complete   │       │
+│  └──────────────────────────────────────────────┘       │
+│                                                          │
+│  Current Operation: Adapting confidentiality clauses     │
+│                                                          │
+│  • Identified 24 clauses                                 │
+│  • Converted 16 clauses                                  │
+│  • Flagged 3 clauses for review                          │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-3 mt-8 text-gray-700">3. Results & Export Screen</h3>
+            <div class="mockup-container overflow-auto">
+┌──────────────────────────────────────────────────────────┐
+│  LEGOSPHERE                                              │
+│                                                          │
+│  Conversion Complete: US NDA → EU NDA                    │
+│  ┌────────────────────┐  ┌────────────────────┐         │
+│  │                    │  │                    │         │
+│  │   ORIGINAL US      │  │   CONVERTED EU     │         │
+│  │   DOCUMENT         │  │   DOCUMENT         │         │
+│  │                    │  │                    │         │
+│  │ The receiving      │  │ The receiving      │         │
+│  │ party shall        │  │ party shall        │         │
+│  │ maintain           │  │ maintain           │         │
+│  │ confidentiality    │  │ confidentiality    │         │
+│  │ for 5 years after  │  │ for 5 years after  │         │
+│  │ disclosure.        │  │ disclosure, in     │         │
+│  │                    │  │ compliance with    │         │
+│  │                    │  │ GDPR Article       │         │
+│  │                    │  │ 5(1)(e) principles │         │
+│  │                    │  │ of storage         │         │
+│  │                    │  │ limitation.        │         │
+│  └────────────────────┘  └────────────────────┘         │
+│                                                          │
+│  ┌────────────────────────────────────────────┐         │
+│  │ ANNOTATIONS & WARNINGS                      │         │
+│  │ • Modified confidentiality period to comply │         │
+│  │   with GDPR storage limitation principles   │         │
+│  │ • Added GDPR data processing requirements   │         │
+│  │ • WARNING: Section 3.4 requires legal review│         │
+│  │                                             │         │
+│  │ DISCLAIMER: Final review by a qualified     │         │
+│  │ legal professional is required              │         │
+│  └────────────────────────────────────────────┘         │
+│                                                          │
+│  [EXPORT TO PDF]  [EXPORT TO WORD]  [START NEW]         │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+            </div>
+        </section>
+
+        <!-- Development Process -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Development Process</h2>
+            <p class="mb-6">The development of Legosphere follows a structured approach to ensure both technical excellence and legal accuracy.</p>
+            
+            <div class="space-y-6">
+                <div class="phase-card p-4 pl-6">
+                    <h3 class="text-xl font-semibold mb-2">Phase 1: Research & Planning</h3>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li>Legal Framework Analysis: Research legal requirements for US, UK, EU, India, and China</li>
+                        <li>Data Collection: Gather sample legal documents and conversion examples</li>
+                        <li>Model Selection: Evaluate NLP models suited for legal text processing</li>
+                        <li>Architecture Design: Finalize tech stack and component interactions</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card p-4 pl-6">
+                    <h3 class="text-xl font-semibold mb-2">Phase 2: Prototype Development</h3>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li>Database Setup: Create schema and populate with legal frameworks</li>
+                        <li>Core NLP Module: Develop document parsing and clause extraction components</li>
+                        <li>Conversion Engine: Build rule-based conversion system for key clauses</li>
+                        <li>Basic UI: Create minimal interface for document upload and nation selection</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card p-4 pl-6">
+                    <h3 class="text-xl font-semibold mb-2">Phase 3: MVP Development</h3>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li>Enhanced NLP Pipeline: Improve parsing accuracy and clause mapping</li>
+                        <li>Compliance Module: Implement risk flagging and annotation</li>
+                        <li>Output Generation: Create formatted document export functionality</li>
+                        <li>User Interface: Develop complete front-end with progress tracking</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card p-4 pl-6">
+                    <h3 class="text-xl font-semibold mb-2">Phase 4: Testing & Refinement</h3>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li>Legal Expert Review: Validate conversion accuracy with professionals</li>
+                        <li>User Testing: Gather feedback on usability and functionality</li>
+                        <li>Performance Optimization: Enhance processing speed and accuracy</li>
+                        <li>Security Audit: Verify data protection and encryption measures</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card p-4 pl-6">
+                    <h3 class="text-xl font-semibold mb-2">Phase 5: Full Release & Expansion</h3>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li>Launch: Release to selected pilot customers</li>
+                        <li>Monitoring: Track usage patterns and conversion accuracy</li>
+                        <li>Additional Nations: Expand database to include more jurisdictions</li>
+                        <li>Advanced Features: Implement version comparison, collaborative review, etc.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Implementation -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Technical Implementation</h2>
+            
+            <h3 class="text-xl font-semibold mb-4 text-gray-700">Python Code for Clause Conversion</h3>
+            <p class="mb-4">Below is a sample Python function that demonstrates the core conversion logic of Legosphere:</p>
+            <div class="code-block mb-8">
+import spacy
+import re
+from typing import Dict, Tuple, List
+
+# Load NLP model
+nlp = spacy.load("en_core_web_lg")
+
+# Legal rules database (simplified example)
+LEGAL_RULES = {
+    "US_to_EU": {
+        "confidentiality_duration": {
+            "pattern": r"maintain confidentiality for (\d+) years",
+            "transform": lambda years: min(int(years), 5),  # GDPR often limits to 5 years max
+            "template": "maintain confidentiality for {years} years, in compliance with GDPR Article 5(1)(e) principles of storage limitation"
+        },
+        "data_processing": {
+            "pattern": r"process.{1,50}data",
+            "transform": lambda _: None,
+            "template": "process personal data in accordance with GDPR requirements, including appropriate technical and organizational measures"
+        }
+    }
+}
+
+def convert_clause(clause: str, source: str, target: str) -> Tuple[str, List[str]]:
+    """
+    Convert a legal clause from source nation to target nation.
+    
+    Args:
+        clause: The legal clause text
+        source: Source nation (e.g., "US")
+        target: Target nation (e.g., "EU")
+    
+    Returns:
+        Tuple containing (converted_clause, list_of_annotations)
+    """
+    rule_key = f"{source}_to_{target}"
+    if rule_key not in LEGAL_RULES:
+        return clause, ["No conversion rules available for this direction"]
+    
+    rules = LEGAL_RULES[rule_key]
+    converted = clause
+    annotations = []
+    
+    # Parse with NLP to understand clause
+    doc = nlp(clause)
+    
+    # Apply conversion rules
+    for rule_name, rule in rules.items():
+        match = re.search(rule["pattern"], clause, re.IGNORECASE)
+        if match:
+            if rule_name == "confidentiality_duration" and match.group(1):
+                years = rule["transform"](match.group(1))
+                new_text = rule["template"].format(years=years)
+                converted = re.sub(rule["pattern"], new_text, converted, flags=re.IGNORECASE)
+                annotations.append(f"Modified confidentiality period to comply with GDPR storage limitation principles")
+            elif rule_name == "data_processing":
+                # Add GDPR data processing requirements
+                if "personal data" in clause.lower() or "data" in clause.lower():
+                    converted += " " + rule["template"]
+                    annotations.append(f"Added GDPR data processing requirements")
+    
+    # Add disclaimer
+    annotations.append("DISCLAIMER: Final review by a qualified legal professional is required")
+    
+    return converted, annotations
+
+# Example usage
+us_clause = "The receiving party shall maintain confidentiality for 5 years after disclosure."
+eu_converted, annotations = convert_clause(us_clause, "US", "EU")
+
+print(f"Original US Clause: {us_clause}")
+print(f"EU Converted Clause: {eu_converted}")
+print("Annotations:")
+for annotation in annotations:
+    print(f"- {annotation}")
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4 text-gray-700">Database Schema</h3>
+            <p class="mb-4">The database design for Legosphere focuses on modularity, allowing for easy expansion to additional jurisdictions and document types:</p>
+            <div class="schema-box bg-gray-100 mb-8 overflow-auto">
+┌─────────────────────────┐       ┌─────────────────────────┐
+│ Jurisdictions           │       │ LegalDocumentTypes      │
+├─────────────────────────┤       ├─────────────────────────┤
+│ jurisdiction_id (PK)    │       │ doc_type_id (PK)        │
+│ name                    │       │ name                    │
+│ code                    │       │ description             │
+│ description             │       │ common_clauses          │
+│ legal_system_type       │       └─────────────────────────┘
+└──────────┬──────────────┘                 ▲
+           │                                 │
+           │                                 │
+┌──────────▼──────────────┐       ┌─────────┴─────────────┐
+│ LegalClauses            │       │ ClauseTemplates       │
+├─────────────────────────┤       ├─────────────────────────┤
+│ clause_id (PK)          │       │ template_id (PK)        │
+│ jurisdiction_id (FK)    │◄──────┤ clause_id (FK)          │
+│ doc_type_id (FK)        │       │ jurisdiction_id (FK)    │
+│ name                    │       │ template_text           │
+│ description             │       │ parameters              │
+│ purpose                 │       │ version                 │
+│ legal_references        │       └─────────────────────────┘
+└──────────┬──────────────┘
+           │
+           │
+┌──────────▼──────────────┐       ┌─────────────────────────┐
+│ ConversionRules         │       │ ComplianceChecks        │
+├─────────────────────────┤       ├─────────────────────────┤
+│ rule_id (PK)            │       │ check_id (PK)           │
+│ source_clause_id (FK)   │       │ jurisdiction_id (FK)    │
+│ target_clause_id (FK)   │       │ doc_type_id (FK)        │
+│ transformation_logic    │       │ check_name              │
+│ priority                │       │ check_logic             │
+│ conditions              │       │ severity                │
+│ annotations             │       │ remediation_advice      │
+└─────────────────────────┘       └─────────────────────────┘
+
+┌─────────────────────────┐       ┌─────────────────────────┐
+│ UserDocuments           │       │ ConversionHistory       │
+├─────────────────────────┤       ├─────────────────────────┤
+│ document_id (PK)        │       │ conversion_id (PK)      │
+│ user_id                 │       │ document_id (FK)        │
+│ original_filename       │       │ source_jurisdiction (FK)│
+│ file_path               │       │ target_jurisdiction (FK)│
+│ upload_date             │       │ conversion_date         │
+│ doc_type_id (FK)        │       │ status                  │
+│ source_jurisdiction (FK)│       │ annotations             │
+│ file_size               │       │ warnings                │
+│ content_hash            │       │ processing_time         │
+└─────────────────────────┘       └─────────────────────────┘
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4 text-gray-700">AI Model Integration</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="ai-model-card p-5 shadow-sm">
+                    <h4 class="font-bold text-lg mb-2">Document Parsing & Structure Analysis</h4>
+                    <p class="mb-2"><span class="font-semibold">Recommended Models:</span> Layoutlm or Donut</p>
+                    <p class="mb-2"><span class="font-semibold">Purpose:</span> Understand document structure, identify sections, tables, and clauses</p>
+                    <p><span class="font-semibold">Training Data:</span> Annotated legal documents with section/clause boundaries</p>
+                </div>
+                
+                <div class="ai-model-card p-5 shadow-sm">
+                    <h4 class="font-bold text-lg mb-2">Clause Classification & Extraction</h4>
+                    <p class="mb-2"><span class="font-semibold">Recommended Models:</span> Fine-tuned LegalBERT or RoBERTa</p>
+                    <p class="mb-2"><span class="font-semibold">Purpose:</span> Identify clause types (confidentiality, liability, termination, etc.)</p>
+                    <p><span class="font-semibold">Training Data:</span> Labeled clauses from different document types</p>
+                </div>
+                
+                <div class="ai-model-card p-5 shadow-sm">
+                    <h4 class="font-bold text-lg mb-2">Legal Language Translation</h4>
+                    <p class="mb-2"><span class="font-semibold">Recommended Models:</span> Fine-tuned GPT-4 or T5</p>
+                    <p class="mb-2"><span class="font-semibold">Purpose:</span> Convert clauses between jurisdictions while preserving meaning</p>
+                    <p><span class="font-semibold">Training Data:</span> Parallel examples of clauses in different jurisdictions</p>
+                </div>
+                
+                <div class="ai-model-card p-5 shadow-sm">
+                    <h4 class="font-bold text-lg mb-2">Risk Analysis & Compliance Checking</h4>
+                    <p class="mb-2"><span class="font-semibold">Recommended Models:</span> Custom-trained classifiers</p>
+                    <p class="mb-2"><span class="font-semibold">Purpose:</span> Identify potential legal risks or compliance issues</p>
+                    <p><span class="font-semibold">Training Data:</span> Annotated examples of compliant and non-compliant clauses</p>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4 text-gray-700">Integration Architecture</h3>
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <ol class="list-decimal pl-5 space-y-4">
+                    <li>
+                        <p class="font-semibold">Pre-processing Pipeline</p>
+                        <ul class="list-disc pl-5 text-gray-600">
+                            <li>PDF/Word extraction using tools like Apache Tika or PyPDF2</li>
+                            <li>Document segmentation to identify clauses and sections</li>
+                            <li>Text normalization and legal entity recognition</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p class="font-semibold">Core Conversion System</p>
+                        <ul class="list-disc pl-5 text-gray-600">
+                            <li>Rule-based system for standard clauses with clear mapping</li>
+                            <li>ML-based conversion for complex or ambiguous clauses</li>
+                            <li>Hybrid approach using legal knowledge graph</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p class="font-semibold">Compliance Verification</p>
+                        <ul class="list-disc pl-5 text-gray-600">
+                            <li>Automated checks against legal requirements database</li>
+                            <li>Risk scoring for potentially problematic clauses</li>
+                            <li>Annotation of changes with legal justification</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p class="font-semibold">Training & Improvement</p>
+                        <ul class="list-disc pl-5 text-gray-600">
+                            <li>Feedback loop from legal experts to improve conversion accuracy</li>
+                            <li>Active learning to prioritize difficult cases for review</li>
+                            <li>Periodic retraining with new examples and legal updates</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Security and Scalability -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Security & Scalability</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Security Measures</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-blue-100 rounded-full w-6 h-6 text-blue-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-lock text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Document Encryption</p>
+                                <p class="text-gray-600">End-to-end encryption for all stored documents</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-blue-100 rounded-full w-6 h-6 text-blue-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-user-shield text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Access Control</p>
+                                <p class="text-gray-600">Role-based access with multi-factor authentication</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-blue-100 rounded-full w-6 h-6 text-blue-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-globe text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Data Residency</p>
+                                <p class="text-gray-600">Option to maintain documents in specific jurisdictions for compliance</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-blue-100 rounded-full w-6 h-6 text-blue-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-clipboard-list text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Audit Logging</p>
+                                <p class="text-gray-600">Track all access and modifications for compliance</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-blue-100 rounded-full w-6 h-6 text-blue-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-shield-alt text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Secure API</p>
+                                <p class="text-gray-600">Token-based authentication for all API interactions</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Scalability Strategy</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-green-100 rounded-full w-6 h-6 text-green-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-expand-arrows-alt text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Horizontal Scaling</p>
+                                <p class="text-gray-600">Deploy microservices for different components</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-green-100 rounded-full w-6 h-6 text-green-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-globe-americas text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Jurisdiction Expansion</p>
+                                <p class="text-gray-600">Modular design to add new jurisdictions without system redesign</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-green-100 rounded-full w-6 h-6 text-green-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-file-contract text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Document Type Coverage</p>
+                                <p class="text-gray-600">Start with NDAs, then expand to other common agreements</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-green-100 rounded-full w-6 h-6 text-green-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-language text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Language Support</p>
+                                <p class="text-gray-600">Begin with English, add additional languages based on demand</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center bg-green-100 rounded-full w-6 h-6 text-green-800 mr-3 flex-shrink-0">
+                                <i class="fas fa-cloud text-sm"></i>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Cloud Infrastructure</p>
+                                <p class="text-gray-600">Containerized deployment with auto-scaling capabilities</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-gray-700">Potential Challenges</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border border-gray-200 rounded p-4">
+                        <p class="font-semibold">Legal Accuracy</p>
+                        <p class="text-gray-600">Ensuring converted documents remain legally valid</p>
+                        <p class="text-gray-600 mt-2"><span class="font-semibold">Mitigation:</span> Regular review by legal experts and continuous system training</p>
+                    </div>
+                    <div class="border border-gray-200 rounded p-4">
+                        <p class="font-semibold">Ambiguity Resolution</p>
+                        <p class="text-gray-600">Handling clauses with no direct equivalent in target jurisdiction</p>
+                        <p class="text-gray-600 mt-2"><span class="font-semibold">Mitigation:</span> Hybrid rule-based and ML approach with clear human review flags</p>
+                    </div>
+                    <div class="border border-gray-200 rounded p-4">
+                        <p class="font-semibold">Regulatory Updates</p>
+                        <p class="text-gray-600">Maintaining current legal knowledge base across jurisdictions</p>
+                        <p class="text-gray-600 mt-2"><span class="font-semibold">Mitigation:</span> Partnership with legal information providers for regular updates</p>
+                    </div>
+                    <div class="border border-gray-200 rounded p-4">
+                        <p class="font-semibold">Expert Verification</p>
+                        <p class="text-gray-600">Balancing automation with necessary human oversight</p>
+                        <p class="text-gray-600 mt-2"><span class="font-semibold">Mitigation:</span> Confidence scoring system to prioritize human review for complex cases</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Stack -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Technology Stack</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Frontend</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fab fa-react text-blue-500 mr-2"></i>
+                                <span>React</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-js text-yellow-500 mr-2"></i>
+                                <span>TypeScript</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-palette text-purple-500 mr-2"></i>
+                                <span>Tailwind CSS</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-route text-green-500 mr-2"></i>
+                                <span>React Router</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-cubes text-red-500 mr-2"></i>
+                                <span>Redux Toolkit</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Backend</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fab fa-python text-blue-500 mr-2"></i>
+                                <span>Python</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-flask text-black mr-2"></i>
+                                <span>Flask API</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-brain text-pink-500 mr-2"></i>
+                                <span>spaCy / HuggingFace</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-file-pdf text-red-700 mr-2"></i>
+                                <span>PyPDF2 / docx</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-tasks text-green-600 mr-2"></i>
+                                <span>Celery</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Infrastructure</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fab fa-aws text-orange-500 mr-2"></i>
+                                <span>AWS / Azure</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-database text-blue-600 mr-2"></i>
+                                <span>PostgreSQL</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-docker text-blue-500 mr-2"></i>
+                                <span>Docker / Kubernetes</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-memory text-red-500 mr-2"></i>
+                                <span>Redis</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+                                <span>JWT Authentication</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Conclusion -->
+        <section class="section">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Conclusion</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="mb-4">Legosphere represents a significant advancement in legal document management for multinational corporations. By leveraging AI and NLP technologies, it streamlines the complex process of adapting legal documents between different jurisdictions.</p>
+                
+                <p class="mb-4">Key advantages of the Legosphere approach include:</p>
+                <ul class="list-disc pl-5 mb-6">
+                    <li>Significant time and cost savings compared to manual conversion</li>
+                    <li>Improved consistency and compliance across international operations</li>
+                    <li>Reduced risk of legal errors in cross-border documents</li>
+                    <li>Scalable architecture that can grow with organizational needs</li>
+                    <li>Secure handling of sensitive legal information</li>
+                </ul>
+                
+                <p class="mb-4">While Legosphere substantially automates the legal document conversion process, it maintains the critical human oversight component. The system is designed to augment legal professionals' capabilities rather than replace their expertise.</p>
+                
+                <div class="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500 mt-6">
+                    <p class="font-semibold text-lg mb-2">Ready to Transform Your Legal Operations?</p>
+                    <p>Legosphere provides a comprehensive solution for multinational corporations looking to streamline their cross-border legal document management. With its AI-powered conversion engine, intuitive interface, and robust security features, Legosphere helps legal teams work more efficiently while maintaining compliance across global operations.</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p>&copy; 2024 Legosphere. All rights reserved.</p>
+    <footer class="gradient-bg text-white py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Legosphere</h3>
+                    <p class="text-gray-300">AI-Driven Legal Document Conversion for a Global Business World</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Features</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>Multi-jurisdiction Conversion</li>
+                        <li>AI-Powered Analysis</li>
+                        <li>Compliance Verification</li>
+                        <li>Document Annotation</li>
+                        <li>Secure Document Handling</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Jurisdictions</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>United States</li>
+                        <li>European Union</li>
+                        <li>United Kingdom</li>
+                        <li>India</li>
+                        <li>China</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2023 Legosphere. All rights reserved.</p>
+                <p class="mt-2 text-sm">DISCLAIMER: Final review by a qualified legal professional is always required.</p>
             </div>
         </div>
     </footer>
