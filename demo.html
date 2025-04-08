@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Document Converter</title>
+    
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- React and ReactDOM -->
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.14.7/babel.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: #4a5568;
+            background-color: #f7fafc;
+        }
+        
+        .progress-bar {
+            height: 1.5rem;
+            border-radius: 0.25rem;
+            overflow: hidden;
+        }
+        
+        .document-preview {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.25rem;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        
+        .document-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .document-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .jurisdiction-tag {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .us-tag {
+            background-color: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .eu-tag {
+            background-color: #bee3f8;
+            color: #2c5282;
+        }
+        
+        .uk-tag {
+            background-color: #e9d8fd;
+            color: #553c9a;
+        }
+        
+        .india-tag {
+            background-color: #feebc8;
+            color: #7b341e;
+        }
+        
+        .china-tag {
+            background-color: #fed7d7;
+            color: #822727;
+        }
+        
+        .russia-tag {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+        
+        .annotation {
+            border-left: 3px solid #4299e1;
+            padding-left: 0.75rem;
+            margin: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .warning {
+            border-left: 3px solid #f56565;
+        }
+        
+        .disclaimer {
+            border-left: 3px solid #ed8936;
+        }
+        
+        .highlight {
+            background-color: #fefcbf;
+            padding: 0 0.25rem;
+            border-radius: 0.125rem;
+        }
+        
+        .highlight-add {
+            background-color: #c6f6d5;
+        }
+        
+        .highlight-remove {
+            background-color: #fed7d7;
+            text-decoration: line-through;
+        }
+        
+        .tabbed-content {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.25rem;
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button.active {
+            border-bottom: 2px solid #4299e1;
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        // Mock data for jurisdictions
+        const jurisdictions = [
+            { id: 'us', name: 'United States', code: 'US', legalSystem: 'Common Law' },
+            { id: 'eu', name: 'European Union', code: 'EU', legalSystem: 'Civil Law' },
+            { id: 'uk', name: 'United Kingdom', code: 'UK', legalSystem: 'Common Law' },
+            { id: 'india', name: 'India', code: 'IN', legalSystem: 'Common Law' },
+            { id: 'china', name: 'China', code: 'CN', legalSystem: 'Civil Law' },
+            { id: 'russia', name: 'Russia', code: 'RU', legalSystem: 'Civil Law' }
+        ];
+        
+        // Mock data for document types
+        const documentTypes = [
+            { id: 'nda', name: 'Non-Disclosure Agreement', description: 'Confidentiality agreement between parties' },
+            { id: 'serviceAgreement', name: 'Service Agreement', description: 'Contract for provision of services' },
+            { id: 'employmentContract', name: 'Employment Contract', description: 'Contract between employer and employee' },
+            { id: 'salesContract', name: 'Sales Contract', description: 'Agreement for the sale of goods' },
+            { id: 'licenseAgreement', name: 'License Agreement', description: 'Permission to use intellectual property' }
+        ];
+        
+        // Sample conversion rules
+        const conversionRules = {
+            'us-eu': {
+                'confidentiality': {
+                    pattern: /confidentiality for (\d+) years/i,
+                    replacement: 'confidentiality for 5 years, in compliance with GDPR Article 5(1)(e) principles of storage limitation',
+                    annotation: 'Modified confidentiality period to comply with GDPR storage limitation principles'
+                },
+                'personalData': {
+                    pattern: /personal data|personally identifiable information/i,
+                    replacement: 'personal data as defined in Article 4(1) of GDPR',
+                    annotation: 'Updated personal data definition to align with GDPR'
+                },
+                'governingLaw': {
+                    pattern: /governed by the laws of (\w+ \w+|\w+)/i,
+                    replacement: 'governed by the laws of the European Union, specifically the applicable laws of the Member State where the Data Controller is established',
+                    annotation: 'Updated governing law clause to reflect EU jurisdiction'
+                }
+            },
+            'us-uk': {
+                'confidentiality': {
+                    pattern: /confidentiality for (\d+) years/i,
+                    replacement: 'confidentiality for a reasonable period not exceeding 5 years',
+                    annotation: 'Adjusted confidentiality period to align with UK reasonable duration standards'
+                }
+            }
+        };
+        
+        // Sample NDA text for demonstration
+        const sampleNDA = `NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement (the "Agreement") is entered into by and between Company A, a corporation organized under the laws of Delaware ("Disclosing Party") and Company B, a corporation organized under the laws of California ("Receiving Party").
+
+1. Definition of Confidential Information
+"Confidential Information" means any information disclosed by the Disclosing Party to the Receiving Party, either directly or indirectly, in writing, orally or by inspection of tangible objects, including but not limited to documents, business plans, source code, software, customer lists, personally identifiable information, and trade secrets.
+
+2. Obligations of Receiving Party
+The Receiving Party shall maintain confidentiality for 7 years after disclosure. The Receiving Party shall use the Confidential Information only for the purpose of evaluating a potential business relationship.
+
+3. Governing Law
+This Agreement shall be governed by the laws of New York, without regard to conflicts of law principles.
+
+4. Data Protection
+Receiving Party shall implement reasonable security measures to protect any personal data received from Disclosing Party.
+
+5. Term and Termination
+This Agreement shall remain in effect for a period of five (5) years from the Effective Date.`;
+        
+        // Mock function to convert document
+        const convertDocument = (text, source, target, docType) => {
+            // Create a deep copy of the text
+            let convertedText = text;
+            let annotations = [];
+            let warnings = [];
+            
+            // Add disclaimer
+            annotations.push({
+                type: 'disclaimer',
+                text: 'DISCLAIMER: Final review by a qualified legal professional is required'
+            });
+            
+            // Check if we have rules for this conversion
+            const ruleKey = `${source}-${target}`;
+            if (conversionRules[ruleKey]) {
+                const rules = conversionRules[ruleKey];
+                
+                // Apply each rule
+                Object.keys(rules).forEach(ruleId => {
+                    const rule = rules[ruleId];
+                    if (rule.pattern.test(convertedText)) {
+                        convertedText = convertedText.replace(rule.pattern, rule.replacement);
+                        annotations.push({
+                            type: 'annotation',
+                            text: rule.annotation
+                        });
+                    }
+                });
+                
+                // Add some warnings for demonstration
+                if (source === 'us' && target === 'eu') {
+                    warnings.push({
+                        type: 'warning',
+                        text: 'Section 4 (Data Protection) requires enhancement with specific GDPR compliance measures'
+                    });
+                    warnings.push({
+                        type: 'warning',
+                        text: 'Section 5 (Term and Termination) should include data subject rights after termination'
+                    });
+                }
+            } else {
+                annotations.push({
+                    type: 'warning',
+                    text: `No specific conversion rules available for ${source.toUpperCase()} to ${target.toUpperCase()} conversion. Basic substitutions applied.`
+                });
+            }
+            
+            return {
+                originalText: text,
+                convertedText,
+                annotations,
+                warnings
+            };
+        };
+        
+        // UploadScreen Component
+        function UploadScreen({ onUpload, onSourceChange, onTargetChange, onDocTypeChange, source, target, docType }) {
+            const [dragActive, setDragActive] = React.useState(false);
+            const [fileName, setFileName] = React.useState('');
+            
+            const handleDrag = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.type === 'dragenter' || e.type === 'dragover') {
+                    setDragActive(true);
+                } else if (e.type === 'dragleave') {
+                    setDragActive(false);
+                }
+            };
+            
+            const handleDrop = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setDragActive(false);
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    const file = e.dataTransfer.files[0];
+                    setFileName(file.name);
+                    // For demo, we'll use sample NDA
+                    onUpload(sampleNDA);
+                }
+            };
+            
+            const handleChange = (e) => {
+                e.preventDefault();
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    setFileName(file.name);
+                    // For demo, we'll use sample NDA
+                    onUpload(sampleNDA);
+                }
+            };
+            
+            const handleClick = () => {
+                document.getElementById('file-upload').click();
+            };
+            
+            return (
+                <div className="p-6 bg-white rounded-lg shadow-sm">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-6">Legal Document Converter</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="source-jurisdiction">
+                                Source Jurisdiction
+                            </label>
+                            <select 
+                                id="source-jurisdiction"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={source}
+                                onChange={(e) => onSourceChange(e.target.value)}
+                            >
+                                {jurisdictions.map(j => (
+                                    <option key={j.id} value={j.id}>{j.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="target-jurisdiction">
+                                Target Jurisdiction
+                            </label>
+                            <select 
+                                id="target-jurisdiction"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={target}
+                                onChange={(e) => onTargetChange(e.target.value)}
+                            >
+                                {jurisdictions.map(j => (
+                                    <option key={j.id} value={j.id}>{j.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="document-type">
+                            Document Type
+                        </label>
+                        <select 
+                            id="document-type"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={docType}
+                            onChange={(e) => onDocTypeChange(e.target.value)}
+                        >
+                            {documentTypes.map(d => (
+                                <option key={d.id} value={d.id}>{d.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div 
+                        className={`upload-area flex flex-col items-center justify-center py-12 ${dragActive ? 'border-blue-500 bg-blue-50' : ''}`}
+                        onDragEnter={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDragOver={handleDrag}
+                        onDrop={handleDrop}
+                        onClick={handleClick}
+                    >
+                        <input 
+                            type="file" 
+                            id="file-upload" 
+                            className="hidden" 
+                            accept=".pdf,.doc,.docx,.txt"
+                            onChange={handleChange}
+                        />
+                        <i className="fas fa-file-upload text-4xl text-gray-400 mb-4"></i>
+                        <p className="text-gray-700 mb-1">Drag and drop your legal document</p>
+                        <p className="text-gray-500 text-sm mb-4">or click to browse</p>
+                        <p className="text-gray-400 text-xs">Supported formats: PDF, Word, Text</p>
+                        {fileName && <p className="mt-4 text-blue-500">{fileName}</p>}
+                    </div>
+                    
+                    <div className="mt-6 text-center">
+                        <button 
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
+                            onClick={() => onUpload(sampleNDA)}
+                        >
+                            {fileName ? 'Analyze Document' : 'Use Sample NDA'}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        
+        // ProcessingScreen Component
+        function ProcessingScreen({ progress }) {
+            return (
+                <div className="p-6 bg-white rounded-lg shadow-sm">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-6">Processing Document</h2>
+                    
+                    <div className="mb-6">
+                        <div className="flex justify-between mb-2">
+                            <span className="text-sm font-medium text-gray-700">Converting document</span>
+                            <span className="text-sm font-medium text-gray-700">{progress}%</span>
+                        </div>
+                        <div className="progress-bar bg-gray-200">
+                            <div 
+                                className="bg-blue-600 h-full transition-all duration-500"
+                                style={{ width: `${progress}%` }}
+                            ></div>
+                        </div>
+                    </div>
+                    
+                    <div className="mb-6">
+                        <h3 className="text-lg font-semibold text-gray-700 mb-3">Current Operations:</h3>
+                        <ul className="space-y-2">
+                            <li className="flex items-center">
+                                <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span className="text-gray-700">Document parsing complete</span>
+                            </li>
+                            <li className="flex items-center">
+                                <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span className="text-gray-700">Analyzing legal structure</span>
+                            </li>
+                            <li className="flex items-center">
+                                <i className="fas fa-spinner fa-spin text-blue-500 mr-2"></i>
+                                <span className="text-gray-700">Applying jurisdiction conversion rules</span>
+                            </li>
+                            <li className="flex items-center text-gray-400">
+                                <i className="fas fa-circle mr-2"></i>
+                                <span>Generating compliance annotations</span>
+                            </li>
+                            <li className="flex items-center text-gray-400">
+                                <i className="fas fa-circle mr-2"></i>
+                                <span>Preparing final document</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div className="text-center text-gray-600 italic">
+                        <p>This may take a few moments depending on document complexity...</p>
+                    </div>
+                </div>
+            );
+        }
+        
+        // ResultsScreen Component
+        function ResultsScreen({ conversionResult, source, target, onReset }) {
+            const [activeTab, setActiveTab] = React.useState('comparison');
+            
+            const getJurisdictionTag = (id) => {
+                const jurisdiction = jurisdictions.find(j => j.id === id);
+                return (
+                    <span className={`jurisdiction-tag ${id}-tag`}>
+                        {jurisdiction.name}
+                    </span>
+                );
+            };
+            
+            return (
+                <div className="p-6 bg-white rounded-lg shadow-sm">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold text-gray-800">Conversion Results</h2>
+                        <button 
+                            className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded transition duration-200"
+                            onClick={onReset}
+                        >
+                            Convert Another Document
+                        </button>
+                    </div>
+                    
+                    <div className="mb-6">
+                        <div className="flex space-x-2 mb-2">
+                            <span className="text-gray-700 font-medium">From:</span> {getJurisdictionTag(source)}
+                            <span className="text-gray-700 font-medium ml-4">To:</span> {getJurisdictionTag(target)}
+                        </div>
+                    </div>
+                    
+                    <div className="mb-6">
+                        <div className="flex border-b border-gray-200">
+                            <button 
+                                className={`tab-button ${activeTab === 'comparison' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('comparison')}
+                            >
+                                Document Comparison
+                            </button>
+                            <button 
+                                className={`tab-button ${activeTab === 'annotations' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('annotations')}
+                            >
+                                Annotations & Warnings
+                            </button>
+                        </div>
+                        
+                        <div className="p-4">
+                            {activeTab === 'comparison' && (
+                                <div className="document-comparison">
+                                    <div>
+                                        <div className="flex justify-between items-center mb-2">
+                                            <h3 className="font-semibold text-gray-700">Original Document</h3>
+                                            {getJurisdictionTag(source)}
+                                        </div>
+                                        <div className="document-preview p-4 bg-gray-50">
+                                            <pre className="whitespace-pre-wrap">{conversionResult.originalText}</pre>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div className="flex justify-between items-center mb-2">
+                                            <h3 className="font-semibold text-gray-700">Converted Document</h3>
+                                            {getJurisdictionTag(target)}
+                                        </div>
+                                        <div className="document-preview p-4 bg-gray-50">
+                                            <pre className="whitespace-pre-wrap">{conversionResult.convertedText}</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            
+                            {activeTab === 'annotations' && (
+                                <div>
+                                    <h3 className="font-semibold text-gray-700 mb-4">Annotations & Warnings</h3>
+                                    
+                                    {conversionResult.annotations.map((annotation, index) => (
+                                        <div 
+                                            key={`annotation-${index}`}
+                                            className={`annotation ${annotation.type} mb-4 p-3 bg-gray-50`}
+                                        >
+                                            <p className="text-gray-700">{annotation.text}</p>
+                                        </div>
+                                    ))}
+                                    
+                                    {conversionResult.warnings.map((warning, index) => (
+                                        <div 
+                                            key={`warning-${index}`}
+                                            className={`annotation ${warning.type} mb-4 p-3 bg-gray-50`}
+                                        >
+                                            <p className="text-gray-700">{warning.text}</p>
+                                        </div>
+                                    ))}
+                                    
+                                    <div className="mt-6 p-4 border border-orange-200 bg-orange-50 rounded-md">
+                                        <h4 className="font-semibold text-orange-800 mb-2">Legal Disclaimer</h4>
+                                        <p className="text-orange-700 text-sm">
+                                            This document conversion is provided as a preliminary tool only. The converted document may not address all legal requirements in the target jurisdiction. A qualified legal professional must review the document before use in any actual legal context. Using this converted document without professional legal review may expose you to legal risks.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    
+                    <div className="flex justify-between">
+                        <div className="flex space-x-3">
+                            <button className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded transition duration-200">
+                                <i className="fas fa-file-word text-blue-600 mr-2"></i>
+                                Export as Word
+                            </button>
+                            <button className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded transition duration-200">
+                                <i className="fas fa-file-pdf text-red-600 mr-2"></i>
+                                Save as PDF
+                            </button>
+                        </div>
+                        
+                        <button className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition duration-200">
+                            <i className="fas fa-envelope mr-2"></i>
+                            Send to Legal Team
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        
+        // Main App Component
+        function App() {
+            const [source, setSource] = React.useState('us');
+            const [target, setTarget] = React.useState('eu');
+            const [docType, setDocType] = React.useState('nda');
+            const [document, setDocument] = React.useState(null);
+            const [conversionResult, setConversionResult] = React.useState(null);
+            const [processing, setProcessing] = React.useState(false);
+            const [progress, setProgress] = React.useState(0);
+            
+            React.useEffect(() => {
+                // Simulate progress updates when processing
+                if (processing) {
+                    const interval = setInterval(() => {
+                        setProgress(prev => {
+                            if (prev >= 100) {
+                                clearInterval(interval);
+                                setProcessing(false);
+                                // Create conversion result
+                                const result = convertDocument(document, source, target, docType);
+                                setConversionResult(result);
+                                return 100;
+                            }
+                            return prev + 10;
+                        });
+                    }, 500);
+                    return () => clearInterval(interval);
+                }
+            }, [processing]);
+            
+            const handleUpload = (text) => {
+                setDocument(text);
+                setProcessing(true);
+                setProgress(0);
+            };
+            
+            const handleReset = () => {
+                setDocument(null);
+                setConversionResult(null);
+                setProgress(0);
+            };
+            
+            // Determine which screen to show
+            const renderScreen = () => {
+                if (conversionResult) {
+                    return (
+                        <ResultsScreen 
+                            conversionResult={conversionResult}
+                            source={source}
+                            target={target}
+                            onReset={handleReset}
+                        />
+                    );
+                } else if (processing) {
+                    return <ProcessingScreen progress={progress} />;
+                } else {
+                    return (
+                        <UploadScreen 
+                            onUpload={handleUpload}
+                            onSourceChange={setSource}
+                            onTargetChange={setTarget}
+                            onDocTypeChange={setDocType}
+                            source={source}
+                            target={target}
+                            docType={docType}
+                        />
+                    );
+                }
+            };
+            
+            return (
+                <div className="app-container min-h-screen py-8 px-4 sm:px-6">
+                    <header className="mb-8">
+                        <nav className="flex justify-between items-center">
+                            <div className="flex items-center">
+                                <i className="fas fa-globe text-blue-600 text-2xl mr-3"></i>
+                                <h1 className="text-xl font-bold text-gray-800">Legosphere</h1>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <a href="#" className="text-gray-600 hover:text-gray-800">Help</a>
+                                <a href="#" className="text-gray-600 hover:text-gray-800">About</a>
+                                <a href="#" className="flex items-center text-blue-600 hover:text-blue-800">
+                                    <i className="fas fa-user-circle mr-1"></i>
+                                    <span>Sign In</span>
+                                </a>
+                            </div>
+                        </nav>
+                    </header>
+                    
+                    <main className="mb-12">
+                        {renderScreen()}
+                    </main>
+                    
+                    <section className="mb-12">
+                        <div className="bg-white p-6 rounded-lg shadow-sm">
+                            <h2 className="text-xl font-bold text-gray-800 mb-4">How It Works</h2>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="flex flex-col items-center text-center p-4">
+                                    <div className="bg-blue-100 p-4 rounded-full mb-4">
+                                        <i className="fas fa-file-upload text-blue-600 text-2xl"></i>
+                                    </div>
+                                    <h3 className="font-semibold text-gray-800 mb-2">1. Upload Document</h3>
+                                    <p className="text-gray-600">Upload your legal document and select source and target jurisdictions</p>
+                                </div>
+                                
+                                <div className="flex flex-col items-center text-center p-4">
+                                    <div className="bg-blue-100 p-4 rounded-full mb-4">
+                                        <i className="fas fa-robot text-blue-600 text-2xl"></i>
+                                    </div>
+                                    <h3 className="font-semibold text-gray-800 mb-2">2. AI Analysis</h3>
+                                    <p className="text-gray-600">Our AI analyzes the document and identifies clauses that need modification</p>
+                                </div>
+                                
+                                <div className="flex flex-col items-center text-center p-4">
+                                    <div className="bg-blue-100 p-4 rounded-full mb-4">
+                                        <i className="fas fa-check-circle text-blue-600 text-2xl"></i>
+                                    </div>
+                                    <h3 className="font-semibold text-gray-800 mb-2">3. Get Results</h3>
+                                    <p className="text-gray-600">Receive your converted document with annotations and legal compliance notes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section className="mb-12">
+                        <div className="bg-white p-6 rounded-lg shadow-sm">
+                            <h2 className="text-xl font-bold text-gray-800 mb-4">Supported Jurisdictions</h2>
+                            
+                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                {jurisdictions.map(j => (
+                                    <div key={j.id} className="border border-gray-200 rounded-lg p-4 text-center">
+                                        <span className={`jurisdiction-tag ${j.id}-tag mb-2`}>{j.code}</span>
+                                        <h3 className="font-semibold text-gray-800">{j.name}</h3>
+                                        <p className="text-xs text-gray-500">{j.legalSystem}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="mt-6 text-center">
+                                <p className="text-gray-600">More jurisdictions coming soon!</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <footer className="border-t border-gray-200 pt-8 pb-12">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                            <div>
+                                <h3 className="font-semibold text-gray-800 mb-4">Legosphere</h3>
+                                <p className="text-gray-600 text-sm">Transforming cross-border legal document compliance with advanced AI technology</p>
+                            </div>
+                            
+                            <div>
+                                <h3 className="font-semibold text-gray-800 mb-4">Features</h3>
+                                <ul className="text-gray-600 text-sm space-y-2">
+                                    <li><a href="#" className="hover:text-gray-800">Document Conversion</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Multi-Jurisdiction Support</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Legal Compliance Check</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Enterprise Solutions</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 className="font-semibold text-gray-800 mb-4">Resources</h3>
+                                <ul className="text-gray-600 text-sm space-y-2">
+                                    <li><a href="#" className="hover:text-gray-800">Documentation</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">API Reference</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Legal Database</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Support Center</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 className="font-semibold text-gray-800 mb-4">Company</h3>
+                                <ul className="text-gray-600 text-sm space-y-2">
+                                    <li><a href="#" className="hover:text-gray-800">About Us</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Careers</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Contact</a></li>
+                                    <li><a href="#" className="hover:text-gray-800">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div className="mt-8 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+                            <p className="text-gray-500 text-sm mb-4 md:mb-0">© 2023 Legosphere. All rights reserved.</p>
+                            
+                            <div className="flex space-x-4">
+                                <a href="#" className="text-gray-400 hover:text-gray-700">
+                                    <i className="fab fa-linkedin text-lg"></i>
+                                </a>
+                                <a href="#" className="text-gray-400 hover:text-gray-700">
+                                    <i className="fab fa-twitter text-lg"></i>
+                                </a>
+                                <a href="#" className="text-gray-400 hover:text-gray-700">
+                                    <i className="fab fa-github text-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div className="mt-6 text-center">
+                            <p className="text-sm text-gray-500">
+                                This application is for demonstration purposes only. Always consult with a qualified legal professional.
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+        
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html> 
